@@ -210,7 +210,7 @@ pipeline {
 def Zipping (Stage,Name_Stage,Content_Stage)
 {
  
-  //Creating required zip files
+  //Creating required Text files
   writeFile(file: """${Name_Stage}.txt""", text: """${Content_Stage}""")
   bat """ move ${Name_Stage}.txt Builds/${Name_Stage}.txt """
  
