@@ -5,5 +5,5 @@
 3. Jenkins Installed with required JDK Setup
 4. All the recommended plugins from jenkins with addition to JSON Operation plugin and File Text Opertaion plugin
 5. Gmail configured with mail ID in configure section of jenkins.
-6. 
-7. 
+6. Jenkins Job with Code from SCM GIT
+
