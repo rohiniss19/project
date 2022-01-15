@@ -17,6 +17,9 @@ pipeline {
     Static_check_Run = false
     Unit_Test_Run = false
     name = ""
+    Country = "INDIA"
+    No_of_holidays = '5'
+    Not_holiday_today = true
    }
     
     parameters {
@@ -51,19 +54,36 @@ pipeline {
             steps {
                 
                 script{
+                  
                 // Getting current date    
                   Date date = new Date()
                   today_date=date.format('yyyy-MM-dd')
                   echo "${today_date}"
+                  def holidays = readJSON file: "${env.WORKSPACE}/holiday.json"
+                  echo "$holidays"
+                  echo holidays.INDIA.Date1
+                  
+                  for (int i=1; i <= 5; i++){
+                  echo holidays."""$Country"""."""Date$i"""
+                  if (holidays."""$Country"""."""Date$i""" == today_date){
+                      Not_holiday_today = false
+                      break
+                      
+                  }
+                  
+                  }
                   
                   holiday_date= "2022-01-15"
                   echo "${holiday_date}"
-                  if (today_date == holiday_date)
+                  if (Not_holiday_today)
                   {
-                      echo "heyy"
+                      echo "Today is a regular work day, Hence proceeding with further steps"
+                  }
+                  else
+                  {
+                      echo "Today is a holiday, hence skipping all the other steps"
                   }
                   
-               
                   }
                 
                 }
@@ -73,7 +93,7 @@ pipeline {
             steps {
                 script{
                 // Execting stage only if date matches
-                 if (today_date == holiday_date )
+                  if (Not_holiday_today)
                   {
                 // Creating Build directory      
                    bat """md Builds"""
@@ -104,7 +124,7 @@ pipeline {
             steps {
                
                  script{
-                 if (today_date == holiday_date)
+                 if (Not_holiday_today)
                   {
                        if (params.Static_Check) {
                             // Stage runs only if Current date is not a holiday and corresponding stage is enabled
@@ -122,7 +142,7 @@ pipeline {
           stage('QA') {
             steps {
                  script{
-                 if (today_date == holiday_date  )
+                 if (Not_holiday_today)
                   {
                        if (params.QA) {
                             // Stage runs only if Current date is not a holiday and corresponding stage is enabled
@@ -143,7 +163,7 @@ pipeline {
           stage('Unit Tests') {
             steps {
                  script{
-                 if (today_date == holiday_date  )
+                 if (Not_holiday_today)
                   {
                        if (params.Unit_Test) {
                           // Stage runs only if Current date is not a holiday and corresponding stage is enabled
@@ -210,7 +230,7 @@ pipeline {
 def Zipping (Stage,Name_Stage,Content_Stage)
 {
  
-  //Creating required Text files
+  //Creating required zip files
   writeFile(file: """${Name_Stage}.txt""", text: """${Content_Stage}""")
   bat """ move ${Name_Stage}.txt Builds/${Name_Stage}.txt """
  
