@@ -59,22 +59,19 @@ pipeline {
                   Date date = new Date()
                   today_date=date.format('yyyy-MM-dd')
                   echo "${today_date}"
+                    
+                 // Reading the holiday.json file to get list of holiday   
                   def holidays = readJSON file: "${env.WORKSPACE}/holiday.json"
-                  echo "$holidays"
-                  echo holidays.INDIA.Date1
-                  
+                 
+                 // Checking if current date is in holiday.json    
                   for (int i=1; i <= 5; i++){
-                  echo holidays."""$Country"""."""Date$i"""
+                  echo holidays."""$Country"""."""Date$i"""                                       
                   if (holidays."""$Country"""."""Date$i""" == today_date){
                       Not_holiday_today = false
-                      break
-                      
+                      break                      
+                  }                  
                   }
                   
-                  }
-                  
-                  holiday_date= "2022-01-15"
-                  echo "${holiday_date}"
                   if (Not_holiday_today)
                   {
                       echo "Today is a regular work day, Hence proceeding with further steps"
@@ -184,6 +181,7 @@ pipeline {
             stage('Summary') {
             steps {
                script{
+                   if (Not_holiday_today){
                    
                  // Printing the summary to the output console regarding the stages ran  
                  echo "Summary"
@@ -199,6 +197,7 @@ pipeline {
                 }
                
                 }
+               }          
             }
             
             
