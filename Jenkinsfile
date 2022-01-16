@@ -117,6 +117,7 @@ pipeline {
                  Zipping ("Stage1",config.Stage1.Name,config.Stage1.Content)
                  Zipping ("Stage2",config.Stage2.Name,config.Stage2.Content)
                  Zipping ("Stage3",config.Stage3.Name,config.Stage3.Content)
+                 Zipping ("Stage4",config.Stage4.Name,config.Stage4.Content)
                  
                 //  Creating a Build.zip folder 
                  bat """ tar.exe -a -c -f Build.zip Builds """
@@ -182,7 +183,7 @@ pipeline {
                           // Stage runs only if Current date is not a holiday and corresponding stage is enabled
                            echo "Excecuting Unit Test"
                            Unit_Test_Run = true
-                           copy_files ("Build")
+                           copy_files ("Unit_Test")
                            
                        }
                   }
