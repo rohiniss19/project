@@ -8,5 +8,5 @@
 6. Gmail configured with mail ID in configure section of jenkins.
 7. Jenkins Job with Code from SCM GIT
 
-## Please note that the URL provided for making rest api call is not working. Hence the stage 2 is not working as expected. Instead I have added a extra holiday.json file with random dates. The stage 2 checks the holiday.json file to get the holiday dates and matches with current date. If it matches then the build proceeds.
+Note : Please note that the URL provided for making rest api call is not working. Hence the stage 2 is not working as expected. Instead I have added a extra holiday.json file          with random dates. The stage 2 checks the holiday.json file to get the holiday dates and matches with current date. If it matches then the build proceeds.
 
