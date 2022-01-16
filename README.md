@@ -4,7 +4,7 @@
 2. GIT Installed and Environment variable path set
 3. Jenkins Installed with required JDK Setup
 4. HTTP Request plugin to make rest api calls.
-5. All the recommended plugins from jenkins with addition to JSON Operation plugin and File Text Opertaion plugin
+5. All the recommended plugins from jenkins with addition to JSON Operation plugin ,File Text Opertaion plugin and post build task plugin.
 6. Gmail configured with mail ID in configure section of jenkins.
 7. Jenkins Job with Code from SCM GIT
 8. Please make sure you run the build on windows node.
