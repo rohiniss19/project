@@ -59,6 +59,21 @@ pipeline {
                   Date date = new Date()
                   today_date=date.format('yyyy-MM-dd')
                   echo "${today_date}"
+                  
+                // Making rest API call to get the response from the below URL
+               
+                 /*
+                  def response = httpRequest authentication: 'Rohini', url:'http://localhost:8080/api/json?pretty=true'
+                  println("Status: "+response.status)
+                  println("Content: "+response.content)
+                  
+                  */
+                  
+                // Please note that the URL provided for making rest api call is not working. Hence the stage 2 is not working as expected. 
+                //Instead I have added a extra holiday.json file with random dates. 
+                // The stage 2 checks the holiday.json file to get the holiday dates and matches with current date.
+                //If it matches then the build proceed
+                 
                     
                  // Reading the holiday.json file to get list of holiday   
                   def holidays = readJSON file: "${env.WORKSPACE}/holiday.json"
@@ -89,7 +104,7 @@ pipeline {
           stage('Build') {
             steps {
                 script{
-                // Execting stage only if date matches
+                // Executing stage only if date is not a holiday
                   if (Not_holiday_today)
                   {
                 // Creating Build directory      
@@ -113,6 +128,7 @@ pipeline {
           }
           stage('Parallel Stage') {
               // Implementing parallel builds - Unit Test stage is run parallel to QA and static stage
+              // Static_Check and QA Stages are nested so that they run parallel with unit test stage
             parallel {
              stage('Static Check & QA') {
                     stages{
@@ -216,7 +232,7 @@ pipeline {
                     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
                 
                     to: "${Success_Email}", 
-                    subject: 'Unstable build in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
+                    subject: 'Successful build in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
         }
         
             }
@@ -243,6 +259,5 @@ def copy_files (Stage_name)
   
 }
    
-
 
 
