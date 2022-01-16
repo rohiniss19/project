@@ -59,6 +59,7 @@ pipeline {
                   Date date = new Date()
                   today_date=date.format('yyyy-MM-dd')
                   echo "${today_date}"
+                
                   
                 // Making rest API call to get the response from the below URL
                
@@ -83,7 +84,8 @@ pipeline {
                   echo holidays."""$Country"""."""Date$i"""                                       
                   if (holidays."""$Country"""."""Date$i""" == today_date){
                       Not_holiday_today = false
-                      break                      
+                      break 
+                    
                   }                  
                   }
                   
@@ -146,6 +148,7 @@ pipeline {
                              Static_check_Run = true
                              copy_files ("Static_Check")
                                           }
+                                         
                   }
                 }
                
@@ -216,32 +219,33 @@ pipeline {
                 }
                }          
             }
+            }
+    }
             
             
             post {
-               
+                 
                 failure {
+                     echo "failed"
                     
                     // Email sent to corresponding recipents
                     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
                    
                     to: "${Failure_Email}", 
                     subject: 'Build failed in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
-        success {
+                        }
+       
+                 success {
                     // Email sent to corresponding recipents
                     emailext body: 'Check console output at $BUILD_URL to view the results. \n\n ${CHANGES} \n\n -------------------------------------------------- \n${BUILD_LOG, maxLines=100, escapeHtml=false}', 
                 
                     to: "${Success_Email}", 
                     subject: 'Successful build in Jenkins: $PROJECT_NAME - #$BUILD_NUMBER'
-        }
+                   }
         
             }
         }
-    }
-}
-
-
+    
 
 def Zipping (Stage,Name_Stage,Content_Stage)
 {
